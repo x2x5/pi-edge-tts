@@ -152,12 +152,18 @@ function buildEdgeArgs(config: Config): string {
 async function speak(text: string, config: Config): Promise<string> {
   mkdirSync(WAV_DIR, { recursive: true });
   const outPath = join(WAV_DIR, `tts-${Date.now()}.mp3`);
+  const textFile = join(WAV_DIR, `tts-${Date.now()}.txt`);
+
+  // Write text to temp file to avoid shell escaping issues
+  writeFileSync(textFile, text, "utf-8");
 
   const edgeArgs = buildEdgeArgs(config);
-  const escaped = text.replace(/"/g, '\\"');
-  const cmd = `edge-tts --voice "${config.voice}" ${edgeArgs} --text "${escaped}" --write-media "${outPath}"`;
+  const cmd = `edge-tts --voice "${config.voice}" ${edgeArgs} --text-file "${textFile}" --write-media "${outPath}"`;
 
   await execAsync(cmd, { timeout: 60000 });
+
+  // Clean up temp text file
+  try { unlinkSync(textFile); } catch { /* ignore */ }
 
   // Play it (macOS afplay, Linux aplay/paplay)
   const player = process.platform === "darwin" ? "afplay" : "paplay";
