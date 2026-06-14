@@ -167,11 +167,7 @@ async function speak(text: string, config: Config): Promise<string> {
 
   // Play it (macOS afplay, Linux aplay/paplay)
   const player = process.platform === "darwin" ? "afplay" : "paplay";
-  // Add 500ms silence at start to prevent afplay cutting off the beginning
-  const paddedPath = join(WAV_DIR, `tts-${Date.now()}-pad.mp3`);
-  await execAsync(`ffmpeg -y -i "${outPath}" -af "adelay=500|500" "${paddedPath}"`, { timeout: 30000 });
-  await execAsync(`${player} "${paddedPath}"`, { timeout: 60000 });
-  try { unlinkSync(paddedPath); } catch { /* ignore */ }
+  await execAsync(`${player} "${outPath}"`, { timeout: 120000 });
 
   // Clean up after playback
   try { unlinkSync(outPath); } catch { /* ignore */ }
