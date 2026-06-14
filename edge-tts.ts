@@ -167,6 +167,8 @@ async function speak(text: string, config: Config): Promise<string> {
 
   // Play it (macOS afplay, Linux aplay/paplay)
   const player = process.platform === "darwin" ? "afplay" : "paplay";
+  // Small delay to ensure file is ready before playback
+  await execAsync("sleep 0.3", { timeout: 5000 });
   await execAsync(`${player} "${outPath}"`, { timeout: 60000 });
 
   // Clean up after playback
