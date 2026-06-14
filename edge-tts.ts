@@ -208,9 +208,9 @@ export default function (pi: ExtensionAPI) {
     const conf = getConf();
     const theme = currentCtx.ui.theme;
     if (conf.enabled) {
-      currentCtx.ui.setStatus("tts", theme.fg("success", "♪ON"));
+      currentCtx.ui.setStatus("tts", theme.fg("success", "♪"));
     } else {
-      currentCtx.ui.setStatus("tts", theme.fg("dim", "♪OFF"));
+      currentCtx.ui.setStatus("tts", undefined);
     }
   }
 
