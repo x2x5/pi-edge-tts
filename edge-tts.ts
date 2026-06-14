@@ -158,7 +158,7 @@ async function speak(text: string, config: Config): Promise<string> {
   writeFileSync(textFile, text, "utf-8");
 
   const edgeArgs = buildEdgeArgs(config);
-  const cmd = `edge-tts --voice "${config.voice}" ${edgeArgs} --text-file "${textFile}" --write-media "${outPath}"`;
+  const cmd = `edge-tts --voice "${config.voice}" ${edgeArgs} -f "${textFile}" --write-media "${outPath}"`;
 
   await execAsync(cmd, { timeout: 60000 });
 
