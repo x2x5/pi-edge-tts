@@ -201,16 +201,7 @@ export default function (pi: ExtensionAPI) {
     defaults = loadConfig();
   }
 
-  // ── Status bar ──
-
-  function updateStatus() {
-    if (!currentCtx) return;
-    if (!getConf().enabled) {
-      currentCtx.ui.setStatus("tts", undefined);
-      return;
-    }
-    currentCtx.ui.setStatus("tts", currentCtx.ui.theme.fg("success", "♪"));
-  }
+  // ── Status bar (unused) ──
 
   // ── Audio queue (serialize playback) ──
 
@@ -472,7 +463,6 @@ export default function (pi: ExtensionAPI) {
                 session.enabled = enabled;
                 persistSession();
                 _tui.requestRender();
-                updateStatus();
                 return;
               }
               if (rowId === "voice" && filteredVoices.length > 0) {
@@ -530,7 +520,6 @@ export default function (pi: ExtensionAPI) {
       session.enabled = true;
       persistSession();
       ctx.ui.notify("Edge TTS enabled", "success");
-      updateStatus();
     },
   });
 
@@ -540,7 +529,6 @@ export default function (pi: ExtensionAPI) {
       session.enabled = false;
       persistSession();
       ctx.ui.notify("Edge TTS disabled", "info");
-      updateStatus();
     },
   });
 
@@ -553,7 +541,6 @@ export default function (pi: ExtensionAPI) {
       session.enabled = !conf.enabled;
       persistSession();
       ctx.ui.notify(`Edge TTS ${session.enabled ? "enabled" : "disabled"}`, "info");
-      updateStatus();
     },
   });
 
@@ -562,13 +549,11 @@ export default function (pi: ExtensionAPI) {
   pi.on("session_start", async (_event, ctx) => {
     currentCtx = ctx;
     restoreSession(ctx);
-    updateStatus();
   });
 
   pi.on("session_tree", async (_event, ctx) => {
     currentCtx = ctx;
     restoreSession(ctx);
-    updateStatus();
   });
 
   pi.on("session_shutdown", async () => {
