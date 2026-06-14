@@ -1,0 +1,19 @@
+{
+  "name": "pi-edge-tts",
+  "version": "1.0.0",
+  "description": "Microsoft Edge TTS integration for pi — voice output extension with text-to-speech",
+  "keywords": [
+    "pi-package",
+    "pi-extension",
+    "tts",
+    "edge-tts",
+    "text-to-speech",
+    "voice"
+  ],
+  "license": "MIT",
+  "pi": {
+    "extensions": [
+      "./edge-tts.ts"
+    ]
+  }
+}
