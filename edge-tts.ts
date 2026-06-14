@@ -205,13 +205,11 @@ export default function (pi: ExtensionAPI) {
 
   function updateStatus() {
     if (!currentCtx) return;
-    const conf = getConf();
-    const theme = currentCtx.ui.theme;
-    if (conf.enabled) {
-      currentCtx.ui.setStatus("tts", theme.fg("success", "♪"));
-    } else {
+    if (!getConf().enabled) {
       currentCtx.ui.setStatus("tts", undefined);
+      return;
     }
+    currentCtx.ui.setStatus("tts", currentCtx.ui.theme.fg("success", "♪"));
   }
 
   // ── Audio queue (serialize playback) ──
